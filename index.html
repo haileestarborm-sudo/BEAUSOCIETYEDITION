@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEAU editions — Hailee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red: #B7222A;
+    --red-dark: #8C1A1F;
+    --red-deep: #6E1418;
+    --cream: #FFFCF7;
+    --card: #FFF6EC;
+    --ink: #2A1712;
+    --ink-soft: #5C4640;
+    --pink: #F6B3CC;
+    --line: rgba(42,23,18,.12);
+    --shadow: 0 18px 40px -20px rgba(110,20,24,.35);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Manrope', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* custom cursor: Beau the dog — desktop pointer devices only */
+  @media (hover:hover) and (pointer:fine){
+    body{ cursor: url("assets/dog_cursor.png") 4 4, auto; }
+    a, button, .clickable, .pkg-add, .checkout-btn, .confirm-btn,
+    .video-card, .nav-link, .menu-btn, .cart-btn, .close-x, .pay-toggle-btn{
+      cursor: url("assets/dog_cursor.png") 4 4, pointer;
+    }
+  }
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px;}
+  h1,h2,h3,h4{font-family:'Baloo 2', sans-serif;margin:0;line-height:1.05;}
+  .center{text-align:center;}
+
+  /* ---------- TOP BADGE (logo above header) ---------- */
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:var(--red);
+    box-shadow:0 6px 20px -10px rgba(0,0,0,.35);
+  }
+  .header-inner{
+    max-width:1120px;margin:0 auto;padding:14px 18px;
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+  }
+  .menu-btn, .cart-btn{
+    background:none;border:none;color:#fff;padding:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .menu-btn{justify-self:start;}
+  .cart-btn{justify-self:end; position:relative;}
+  .cart-count{
+    position:absolute; top:-2px; right:-4px;
+    background:var(--pink); color:var(--red-deep);
+    font-weight:800; font-size:11px; border-radius:999px;
+    min-width:17px; height:17px; display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2',sans-serif;
+  }
+  .logo-mark{justify-self:center;}
+  .logo-mark img{height:34px;width:auto;display:block;}
+  .bar{width:24px;height:3px;background:#fff;border-radius:3px;display:block;margin:4px 0;}
+
+  /* mobile drawer */
+  .drawer-overlay{
+    position:fixed; inset:0; background:rgba(42,23,18,.45);
+    opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:70;
+  }
+  .drawer-overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; left:0; height:100%; width:82%; max-width:340px;
+    background:var(--cream); z-index:80;
+    transform:translateX(-105%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+    padding:26px 24px; display:flex; flex-direction:column; gap:4px;
+    box-shadow:20px 0 40px -20px rgba(0,0,0,.4);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer a{
+    display:block; text-decoration:none; padding:14px 4px; border-bottom:1px solid var(--line);
+  }
+  .drawer a img{height:26px; width:auto;}
+  .drawer .close-x{align-self:flex-end; background:none;border:none;color:var(--red);font-size:26px;padding:4px 8px;margin-bottom:10px;}
+
+  /* cart drawer (right) */
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100%; width:92%; max-width:400px;
+    background:var(--cream); z-index:80;
+    transform:translateX(105%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+    padding:22px 20px; overflow-y:auto;
+    box-shadow:-20px 0 40px -20px rgba(0,0,0,.4);
+  }
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-drawer h3{color:var(--red); font-size:24px;}
+  .cart-drawer .close-x{background:none;border:none;color:var(--red);font-size:26px;padding:4px 8px;}
+  .cart-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .empty-cart{color:var(--ink-soft); font-size:14.5px; line-height:1.6;}
+  .line-item{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:12px 0; border-bottom:1px solid var(--line); gap:10px;
+  }
+  .line-item .li-name{font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--ink); font-size:15.5px;}
+  .li-remove{background:none;border:none;color:var(--red);font-size:12.5px;text-decoration:underline;padding:2px 0;}
+  .breakdown{background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:14px 0; font-size:13.5px;}
+  .breakdown-row{display:flex; justify-content:space-between; padding:5px 0; color:var(--ink-soft);}
+  .breakdown-row.total{border-top:1px dashed var(--line); margin-top:6px; padding-top:10px; font-weight:800; color:var(--ink); font-size:15px;}
+  .breakdown-row.total span:last-child{color:var(--red);}
+  .checkout-btn{
+    width:100%; background:var(--red); color:#fff; border:none; border-radius:999px;
+    padding:13px 14px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px;
+    margin-top:10px;
+  }
+  .checkout-btn:hover{background:var(--red-dark);}
+  .cart-legal{font-size:11.5px; color:var(--ink-soft); margin-top:14px; line-height:1.5;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:56px 0;}
+  .section-head{margin-bottom:30px; text-align:center;}
+  .section-head img{margin:0 auto;}
+
+  /* ---------- TAGLINE ---------- */
+  .tagline-strip{background:var(--red); padding:26px 0 30px; text-align:center;}
+  .tagline-strip h2{font-size:clamp(34px,7vw,56px); color:#fff; letter-spacing:.5px;}
+  .tagline-strip h2 span{color:var(--pink);}
+  .tagline-strip p{color:#ffd9e2; font-size:14px; margin-top:6px; font-weight:600; letter-spacing:.5px;}
+
+  /* ---------- ABOUT (white bg per Hailee's request) ---------- */
+  .about{background:#fff; color:var(--ink); padding-top:56px;}
+  .about-label img{max-width:220px; margin:0 auto 18px;}
+  .about-hero{max-width:360px; margin:0 auto 28px; border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow);}
+  .about-hero img{width:100%; display:block;}
+  .about h2.welcome{color:var(--red); font-size:clamp(28px,6vw,42px); margin-bottom:18px; text-align:center;}
+  .about-bio{font-size:16.5px; line-height:1.7; color:var(--ink-soft); max-width:52ch; margin:0 auto; text-align:center;}
+  .about-bio strong{color:var(--ink);}
+  .about-bio .heart{color:var(--red);}
+
+  /* ---------- PORTFOLIO ---------- */
+  .portfolio{background:var(--cream);}
+  .video-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  @media (max-width:820px){ .video-grid{grid-template-columns:repeat(2,1fr);} }
+  .video-card{
+    position:relative; border-radius:var(--radius-md); overflow:hidden;
+    aspect-ratio:9/16; box-shadow:var(--shadow); transition:transform .35s ease;
+    background:linear-gradient(155deg, var(--red-dark), var(--ink) 130%);
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+    border:none;
+  }
+  .video-card:hover{transform:translateY(-4px);}
+  .video-play{
+    width:56px; height:56px; border-radius:50%; background:rgba(255,255,255,.18);
+    display:flex; align-items:center; justify-content:center; backdrop-filter:blur(2px);
+  }
+  .video-play svg{width:22px;height:22px;}
+  .video-card iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+  .video-handle{
+    position:absolute; top:10px; left:10px; z-index:3; color:#fff; font-size:11px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; background:rgba(0,0,0,.55);
+    padding:5px 10px; border-radius:999px; backdrop-filter:blur(2px); pointer-events:none;
+  }
+  .portfolio-note{text-align:center; color:var(--ink-soft); font-size:14px; margin-top:22px;}
+  .portfolio-note a{color:var(--red); font-weight:700; text-decoration:underline;}
+
+  /* ---------- PAQUETES ---------- */
+  .paquetes{background:var(--card);}
+  .pkg-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media (max-width:980px){ .pkg-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:640px){ .pkg-grid{grid-template-columns:1fr;} }
+  .pkg-card{
+    background:#fff; border-radius:var(--radius-lg); overflow:hidden;
+    box-shadow:var(--shadow); display:flex; flex-direction:column;
+    border:1px solid var(--line); position:relative;
+  }
+  .pkg-card.selected{border:3px solid var(--red);}
+  .pkg-badge{
+    position:absolute; top:14px; right:14px; background:var(--pink); color:var(--red-deep);
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11.5px; padding:5px 12px;
+    border-radius:999px; z-index:2; letter-spacing:.3px;
+  }
+  .pkg-thumb{
+    aspect-ratio:1/1; background:linear-gradient(150deg, var(--pink) 0%, var(--red) 100%);
+    display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  }
+  .pkg-thumb iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+  .pkg-body{padding:18px 18px 20px;}
+  .pkg-title-img{max-width:100%; height:auto; margin-bottom:6px;}
+  .pkg-sub{font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;}
+  .pkg-desc{font-size:13.5px; color:var(--ink-soft); line-height:1.55; margin-bottom:12px; min-height:58px;}
+  .pkg-price{font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800; color:var(--ink); margin-bottom:2px;}
+  .pkg-price small{font-family:'Manrope',sans-serif; font-size:12px; font-weight:600; color:var(--ink-soft);}
+  .pkg-cop{font-size:12px; color:var(--ink-soft); margin-bottom:10px;}
+  .pkg-days{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+  .pkg-add{
+    width:100%; background:var(--red); color:#fff; border:none; border-radius:999px;
+    padding:11px 14px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14.5px;
+    letter-spacing:.2px; transition:background .2s ease;
+  }
+  .pkg-add:hover{background:var(--red-dark);}
+  .custom-note{margin-top:34px; text-align:center; font-size:14.5px; color:var(--ink-soft);}
+  .custom-note a{color:var(--red); font-weight:700; text-decoration:underline;}
+  .pkg-mini{border:2px solid var(--line); border-radius:16px; padding:12px; text-align:center; background:#fff;}
+  .pkg-mini.selected{border-color:var(--red); background:var(--card);}
+  .pkg-mini img{max-width:80%; margin:0 auto 6px;}
+  .pkg-mini .pkg-mini-price{font-family:'Baloo 2',sans-serif; font-weight:800; color:var(--red);}
+
+  /* ---------- TERMS ---------- */
+  .terms{background:var(--cream);}
+  .terms-list{max-width:640px; margin:0 auto; padding-left:0; list-style:none; color:var(--ink-soft); font-size:15px; line-height:1.85;}
+  .terms-list li{margin-bottom:16px; padding-left:26px; position:relative;}
+  .terms-list li::before{
+    content:"🎀"; position:absolute; left:0; top:1px; font-size:13px;
+  }
+  .terms-list strong{color:var(--ink);}
+
+  /* ---------- GOAL ---------- */
+  .goal{background:var(--card);}
+  .goal-box{
+    background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow);
+    padding:32px 26px; max-width:560px; margin:0 auto; text-align:center;
+    border:1px solid var(--line);
+  }
+  .goal-box .phone-icon{margin:0 auto 16px;}
+  .goal-track{background:#f1e6d8; border-radius:999px; height:16px; overflow:hidden;}
+  .goal-fill{background:linear-gradient(90deg, var(--red), var(--pink)); height:100%; width:0%; border-radius:999px; transition:width 1.1s cubic-bezier(.4,0,.2,1);}
+  .goal-text{font-size:14px; color:var(--ink-soft); margin-top:14px; line-height:1.6;}
+  .goal-pct{font-family:'Baloo 2',sans-serif; color:var(--red); font-weight:800;}
+
+  /* ---------- TESTIMONIOS ---------- */
+  .testimonials{background:var(--cream);}
+  .testimonial-card{
+    display:flex; align-items:center; gap:18px; max-width:560px; margin:0 auto 26px;
+    background:#fff; border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  @media (max-width:480px){ .testimonial-card{flex-direction:column; text-align:center;} }
+  .testimonial-photo-ring{
+    width:86px; height:86px; min-width:86px; border-radius:50%; padding:4px;
+    background:var(--red); animation:soft-pulse 2.6s ease-in-out infinite;
+  }
+  .testimonial-photo-ring img{
+    width:100%; height:100%; border-radius:50%; object-fit:cover; display:block; border:3px solid #fff;
+  }
+  @keyframes soft-pulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(183,34,42,.35); }
+    50%{ box-shadow:0 0 0 9px rgba(183,34,42,0); }
+  }
+  .testimonial-bubble{
+    position:relative; background:var(--card); border-radius:16px; padding:14px 18px;
+    font-size:14px; color:var(--ink-soft); line-height:1.55;
+  }
+  .testimonial-bubble:before{
+    content:""; position:absolute; left:-8px; top:24px;
+    border-width:8px 8px 8px 0; border-style:solid;
+    border-color:transparent var(--card) transparent transparent;
+  }
+  @media (max-width:480px){ .testimonial-bubble:before{display:none;} }
+  .testimonial-handle{display:block; margin-top:8px; font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--red); font-size:13px;}
+  .testimonial-reel{margin-bottom:26px; display:flex; justify-content:center;}
+  .testimonial-proof{
+    max-width:520px; margin:0 auto; background:#fff; border:1px solid var(--line);
+    border-radius:var(--radius-lg); padding:16px; text-align:center; box-shadow:var(--shadow);
+  }
+  .testimonial-proof img{border-radius:14px; margin:0 auto 12px;}
+  .testimonial-proof p{font-size:13.5px; color:var(--ink-soft); margin:0;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--red); color:#fff; text-align:center;}
+  .contact p{color:#ffe9ee; max-width:44ch; margin:0 auto 26px; font-size:15px;}
+  .contact-btns{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .contact-btns a{
+    display:inline-flex; align-items:center; gap:9px;
+    background:#fff; color:var(--red); font-family:'Baloo 2',sans-serif; font-weight:700;
+    padding:13px 24px; border-radius:999px; text-decoration:none; font-size:15px;
+  }
+  .contact-btns a.ig{background:var(--pink); color:var(--red-deep);}
+
+  /* ---------- SIGN OFF + FOOTER ---------- */
+  .signoff{background:var(--cream); text-align:center;}
+  .signoff img{max-width:230px; margin:0 auto 16px;}
+  .signoff p{color:var(--ink-soft); font-size:14.5px; max-width:46ch; margin:0 auto; line-height:1.7;}
+  .signoff .paw{color:var(--red);}
+  footer{background:var(--red-deep); padding:30px 0 26px; text-align:center;}
+  footer img{height:30px; margin:0 auto 10px;}
+  footer p{color:#f2c9ce; font-size:12px; margin:0;}
+
+  /* ---------- CHECKOUT OVERLAY (multi step "new page") ---------- */
+  .checkout-overlay{
+    position:fixed; inset:0; background:var(--cream); z-index:95;
+    display:none; flex-direction:column; overflow-y:auto;
+  }
+  .checkout-overlay.open{display:flex;}
+  .checkout-topbar{background:var(--red); padding:16px 20px; display:flex; align-items:center; justify-content:center; position:relative;}
+  .checkout-topbar img{height:30px;}
+  .checkout-close{position:absolute; top:14px; right:18px; background:none; border:none; color:#fff; font-size:26px;}
+  .checkout-inner{flex:1; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .checkout-box{max-width:460px; width:100%; text-align:center;}
+  .spin-logo{width:90px; margin:0 auto 22px; animation:spin 1.4s linear infinite;}
+  @keyframes spin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  .checkout-loading p{color:var(--ink-soft); font-family:'Baloo 2',sans-serif; font-weight:700; font-size:16px;}
+
+  .checkout-store{display:none; width:100%; text-align:left;}
+  .checkout-store h3{color:var(--red); font-size:22px; text-align:center; margin-bottom:18px;}
+  .checkout-store .pkg-mini-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;}
+  @media (max-width:520px){ .checkout-store .pkg-mini-grid{grid-template-columns:1fr;} }
+  .continue-btn{
+    display:block; width:100%; background:var(--red); color:#fff; border:none; border-radius:999px;
+    padding:14px; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px;
+  }
+  .continue-btn:hover{background:var(--red-dark);}
+
+  .checkout-form{display:none; background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:28px 24px; text-align:left; width:100%;}
+  .checkout-receipt{background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:28px 24px; width:100%;}
+  .checkout-pay{display:none; background:#fff; border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:28px 24px; text-align:left; width:100%;}
+  .checkout-pay h3{color:var(--red); font-size:24px; margin-bottom:16px; text-align:center;}
+  .pay-toggle{display:flex; gap:10px; margin-bottom:18px;}
+  .pay-toggle-btn{
+    flex:1; padding:12px 8px; border-radius:14px; border:2px solid var(--line);
+    background:#fff; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px; color:var(--ink-soft);
+  }
+  .pay-toggle-btn.active{background:var(--red); border-color:var(--red); color:#fff;}
+  .pay-breakdown{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:16px;}
+  .pay-breakdown-row{display:flex; justify-content:space-between; padding:5px 0; color:var(--ink-soft); font-size:14px;}
+  .pay-breakdown-row.total{border-top:1px dashed var(--line); margin-top:6px; padding-top:10px; font-weight:800; color:var(--ink); font-size:17px;}
+  .pay-breakdown-row.total span:last-child{color:var(--red);}
+  .pay-cop-note{text-align:center; font-size:13px; color:var(--ink-soft); margin-bottom:14px;}
+  .checkout-note{font-size:12px; color:var(--ink-soft); line-height:1.6; margin-top:14px; text-align:center;}
+
+  .thankyou{display:none; text-align:center;}
+  .thankyou .big-emoji{font-size:52px; margin-bottom:10px;}
+  .thankyou h3{color:var(--red); margin-bottom:8px;}
+  .thankyou p{color:var(--ink-soft); font-size:14.5px; margin-bottom:18px;}
+  .thankyou button{background:var(--red); color:#fff; border:none; border-radius:999px; padding:12px 26px; font-family:'Baloo 2',sans-serif; font-weight:700;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+    .spin-logo{animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <button class="menu-btn" id="menuOpen" aria-label="Abrir menú">
+      <span><span class="bar"></span><span class="bar"></span><span class="bar"></span></span>
+    </button>
+    <div class="logo-mark">
+      <img src="assets/bow_transparent.png" alt="BEAU editions">
+    </div>
+    <button class="cart-btn" id="cartOpen" aria-label="Abrir carrito">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+      <span class="cart-count" id="cartCount" style="display:none;">0</span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<nav class="drawer" id="drawer">
+  <button class="close-x" id="drawerClose">&times;</button>
+  <a href="#about" class="nav-link"><img src="assets/about_bs_red.png" alt="about BS"></a>
+  <a href="#portafolio" class="nav-link"><img src="assets/hdr_portafolio.png" alt="Portafolio"></a>
+  <a href="#paquetes" class="nav-link"><img src="assets/hdr_paquetes.png" alt="Paquetes"></a>
+  <a href="#testimonios" class="nav-link"><img src="assets/hdr_testimonios.png" alt="testimonios"></a>
+  <a href="#terminos" class="nav-link"><img src="assets/hdr_terms.png" alt="term & conditions"></a>
+  <a href="#contacto" class="nav-link"><img src="assets/hdr_contacto.png" alt="contacto"></a>
+</nav>
+
+<div class="drawer-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-top">
+    <h3>tu carrito</h3>
+    <button class="close-x" id="cartClose">&times;</button>
+  </div>
+  <div id="cartBody">
+    <p class="empty-cart">Tu carrito está vacío por ahora. Ve a <a href="#paquetes" style="color:var(--red);font-weight:700;">Paquetes</a> y elige el que más te guste 🎀</p>
+  </div>
+</aside>
+
+<!-- ================= TAGLINE ================= -->
+<div class="tagline-strip">
+  <img src="assets/logo_full.png" alt="BEAU editions" style="max-width:280px;margin:0 auto;">
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-label"><img src="assets/about_bs_red.png" alt="about BS"></div>
+
+    <div class="about-hero">
+      <img src="assets/ribbon_card_full.jpg" alt="This is BS — Beau">
+    </div>
+
+    <h2 class="welcome">Welcome to BS</h2>
+
+    <p class="about-bio">
+      Hola, soy <strong>Hailee</strong>. Esta es mi página: aquí edito videos con ritmo, color y mucho
+      cariño por el detalle. Cada corte cuenta una historia y cada proyecto lo trato como si fuera mío.
+      Este espacio nació como un proyecto en honor a mi perrita <strong>estrellita, Beau</strong> <span class="heart">♡</span>,
+      quien le da nombre y corazón a todo lo que hago aquí. Explora mi portafolio, elige tu paquete
+      y hagamos algo que te encante. Gracias por estar aquí. 🎀
+    </p>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="portfolio" id="portafolio">
+  <div class="wrap">
+    <div class="section-head"><img src="assets/hdr_portafolio.png" alt="Portafolio"></div>
+    <div class="video-grid" id="portfolioVideoGrid"></div>
+    <p class="portfolio-note">¿Quieres ver más ejemplos? Sígueme en <a href="https://www.instagram.com/thebeaueditions?stkn=aGJ5aGhtcHRwNHVz" target="_blank" rel="noopener">Instagram</a> — ahí subo mis últimas ediciones.</p>
+  </div>
+</section>
+
+<!-- ================= PAQUETES ================= -->
+<section class="paquetes" id="paquetes">
+  <div class="wrap">
+    <div class="section-head"><img src="assets/hdr_paquetes.png" alt="Paquetes"></div>
+
+    <div class="pkg-grid" id="pkgGrid">
+
+      <div class="pkg-card" data-pkg-name="The Beau single tee">
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_single.png" alt="The Beau single tee">
+          <div class="pkg-sub">1 video</div>
+          <div class="pkg-desc">Ideal para probar mi estilo de edición sin compromiso: un video con ritmo, color y transiciones que atrapan desde el primer segundo.</div>
+          <div class="pkg-price">$10.74 <small>USD</small></div>
+          <div class="pkg-days">Entrega: 2 días hábiles</div>
+          <button class="pkg-add" data-name="The Beau single tee" data-price="10.74">agregar</button>
+        </div>
+      </div>
+
+      <div class="pkg-card" data-pkg-name="The Beau Double-Take">
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_double_take.png" alt="The Beau Double-Take">
+          <div class="pkg-sub">8 videos</div>
+          <div class="pkg-desc">Un paquete intermedio pensado para quienes ya tienen contenido constante y quieren mantener el ritmo sin comprometerse a un volumen mayor.</div>
+          <div class="pkg-price">$73.29 <small>USD</small></div>
+          <div class="pkg-days">Entrega: 4 días hábiles</div>
+          <button class="pkg-add" data-name="The Beau Double-Take" data-price="73.29">agregar</button>
+        </div>
+      </div>
+
+      <div class="pkg-card" data-pkg-name="The BEAU Tee">
+        <span class="pkg-badge">más popular</span>
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_beau_tee.png" alt="The BEAU Tee">
+          <div class="pkg-sub">10 videos</div>
+          <div class="pkg-desc">El favorito de mis clientes. 10 ediciones con cortes al ritmo, color cuidado y ese toque que hace que tu contenido se vea profesional de verdad.</div>
+          <div class="pkg-price">$87.10 <small>USD</small></div>
+          <div class="pkg-days">Entrega: 5 días hábiles</div>
+          <button class="pkg-add" data-name="The BEAU Tee" data-price="87.10">agregar</button>
+        </div>
+      </div>
+
+      <div class="pkg-card" data-pkg-name="The &quot;BEAU&quot; Director's Cut">
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_director_cut.png" alt="The BEAU Director's Cut">
+          <div class="pkg-sub">15 videos</div>
+          <div class="pkg-desc">Para quienes publican seguido y quieren asegurar contenido de calidad por varias semanas, con mi atención al detalle en cada corte.</div>
+          <div class="pkg-price">$113.71 <small>USD</small></div>
+          <div class="pkg-days">Entrega: 4 días hábiles</div>
+          <button class="pkg-add" data-name="The &quot;BEAU&quot; Director's Cut" data-price="113.71">agregar</button>
+        </div>
+      </div>
+
+      <div class="pkg-card" data-pkg-name="The &quot;this is BS lux&quot;">
+        <span class="pkg-badge">lux</span>
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_lux.png" alt="The this is BS lux">
+          <div class="pkg-sub">20 videos</div>
+          <div class="pkg-desc">Todo lo que necesitas por un buen tiempo: 20 videos editados con el máximo detalle, para que tu contenido nunca pare de crecer.</div>
+          <div class="pkg-price">$129.03 <small>USD</small></div>
+          <div class="pkg-days">Entrega: 4 días hábiles</div>
+          <button class="pkg-add" data-name="The &quot;this is BS lux&quot;" data-price="129.03">agregar</button>
+        </div>
+      </div>
+
+      <div class="pkg-card" data-pkg-name="The Beau &quot;Ultimate Khalessi&quot;">
+        <span class="pkg-badge">mensual</span>
+        <div class="pkg-thumb" data-pkg-video></div>
+        <div class="pkg-body">
+          <img class="pkg-title-img" src="assets/pkg_khalessi.png" alt="The Beau Ultimate Khalessi">
+          <div class="pkg-sub">30 reels · volumen fijo mensual 🍡</div>
+          <div class="pkg-desc">El pack más completo: 30 reels al mes para que tu contenido nunca pare, con entregas organizadas en tandas durante todo el mes.</div>
+          <div class="pkg-price">$165.00 <small>USD</small></div>
+          <div class="pkg-days">Entrega: repartida durante el mes (por tandas)</div>
+          <button class="pkg-add" data-name="The Beau &quot;Ultimate Khalessi&quot;" data-price="165.00">agregar</button>
+        </div>
+      </div>
+
+    </div>
+    <p style="text-align:center;font-size:12px;color:var(--ink-soft);margin-top:14px;">Precios calculados en pesos colombianos y convertidos a USD según la TRM del momento en que se actualizó esta página.</p>
+
+    <p class="custom-note">¿Necesitas algo diferente o un combo a tu medida? Escríbeme por <a href="https://wa.me/message/ZYKJDMZVGIITL1" target="_blank" rel="noopener">WhatsApp</a> y armamos un paquete especial para ti.</p>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIOS ================= -->
+<section class="testimonials" id="testimonios">
+  <div class="wrap">
+    <div class="section-head"><img src="assets/hdr_testimonios.png" alt="testimonios"></div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-photo-ring">
+        <img src="assets/dr_abisai.jpg" alt="Dr. Abisai Arias Rodríguez">
+      </div>
+      <div class="testimonial-bubble">
+        <!-- NOTA PARA HAILEE: esta frase es un ejemplo — pásame la cita real que te dio
+             el Dr. Abisai (o el mensaje/reseña) y la reemplazo tal cual la quieras. -->
+        <p>"¡Increíble servicio! La edición quedó súper profesional y con muchísimo detalle. 100% recomendada." 🎀</p>
+        <span class="testimonial-handle">@drabisai</span>
+      </div>
+    </div>
+
+    <div class="testimonial-reel">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DdSOpJxxsYi/" data-instgrm-version="14" style="margin:0 auto;max-width:340px;">
+        <a href="https://www.instagram.com/reel/DdSOpJxxsYi/" target="_blank" rel="noopener">Ver publicación en Instagram</a>
+      </blockquote>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-photo-ring">
+        <img src="assets/dr_casasola.jpg" alt="Dr. Luis Casasola">
+      </div>
+      <div class="testimonial-bubble">
+        <!-- NOTA PARA HAILEE: frase de ejemplo también — mándame la cita real del Dr. Casasola cuando la tengas. -->
+        <p>"Quedé encantado con el resultado, se nota el cuidado en cada detalle de la edición." 🎀</p>
+        <span class="testimonial-handle">@dr.luiscasasola</span>
+      </div>
+    </div>
+
+    <div class="testimonial-reel">
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/Dce5rBQCL-E/" data-instgrm-version="14" style="margin:0 auto;max-width:340px;">
+        <a href="https://www.instagram.com/reel/Dce5rBQCL-E/" target="_blank" rel="noopener">Ver publicación en Instagram</a>
+      </blockquote>
+    </div>
+
+    <div class="testimonial-proof">
+      <img src="assets/evidencia_trabajo.jpg" alt="Evidencia de trabajo entregado">
+      <p>Así de contentos quedan mis clientes con el trabajo entregado 🎀</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TERMS ================= -->
+<section class="terms" id="terminos">
+  <div class="wrap">
+    <div class="section-head"><img src="assets/hdr_terms.png" alt="term & conditions"></div>
+    <ul class="terms-list">
+      <li><strong>Anticipo obligatorio:</strong> para iniciar cualquier proyecto se requiere sí o sí un anticipo mínimo del 50%. También puedes pagar el 100% desde el inicio si lo prefieres.</li>
+      <li><strong>Comisión de PayPal:</strong> el pago se hace a través de PayPal y la comisión de la plataforma corre por cuenta del comprador. Esto asegura que a mí me llegue el valor neto acordado por el trabajo.</li>
+      <li><strong>Días hábiles:</strong> no laboro fines de semana ni festivos oficiales de Colombia. Los tiempos de entrega se cuentan en días hábiles según el calendario colombiano.</li>
+      <li><strong>Tiempos de entrega:</strong> paquete de 10 videos, 5 días hábiles. Paquetes de 15 y 20 videos, 4 días hábiles.</li>
+      <li><strong>Entrega por tandas:</strong> los videos se entregan en tandas o lotes, según lo indicado en la descripción de cada paquete.</li>
+      <li><strong>Sin pruebas:</strong> no realizo pruebas gratuitas ni pagas. Trabajo bajo contratación inmediata y en serio: una vez confirmado el anticipo, inicio el proyecto.</li>
+      <li><strong>Material y derechos:</strong> el cliente debe contar con los derechos de uso del material entregado. BEAU editions no se hace responsable por contenido protegido por derechos de autor de terceros.</li>
+      <li><strong>Cancelaciones:</strong> una vez iniciado el trabajo, el anticipo no es reembolsable.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= GOAL ================= -->
+<section class="goal">
+  <div class="wrap">
+    <div class="goal-box">
+      <svg class="phone-icon" width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.4"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 5.2h4" stroke-linecap="round"/><circle cx="12" cy="18.4" r="0.9" fill="var(--red)" stroke="none"/></svg>
+      <h3 style="color:var(--red); font-size:22px; margin-bottom:16px;">tu compra me ayuda a llegar a un nuevo equipo</h3>
+      <div class="goal-track"><div class="goal-fill" id="goalFill"></div></div>
+      <p class="goal-text">Gracias a las compras de mis clientes ya llevo <span class="goal-pct" id="goalPct">0%</span> del camino para renovar mi equipo de edición. ¡Cada paquete suma! 🎀</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <div class="section-head"><img src="assets/hdr_contacto_white.png" alt="contacto"></div>
+    <p>¿Tienes dudas, una idea o quieres cotizar algo especial? Escríbeme, con gusto te respondo.</p>
+    <div class="contact-btns">
+      <a href="https://wa.me/message/ZYKJDMZVGIITL1" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--red)"><path d="M17.5 14.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.1-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.7-.8-2.8-1.4-3.9-3.2-.3-.5.3-.5.9-1.6.1-.2.05-.4-.05-.6-.1-.2-.9-2.1-1.1-2.4-.2-.4-.5-.3-.7-.3-.2 0-.5 0-.7.05-.2.05-.6.2-.9.6-.3.4-1.2 1.2-1.2 2.9 0 1.7 1.2 3.4 1.4 3.6.2.2 2.4 3.7 5.9 5 3.5 1.3 3.5.9 4.1.8.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.15-1.4-.05-.1-.25-.2-.55-.35z"/><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" fill="none" stroke="var(--red)" stroke-width="1.3"/></svg>
+        WhatsApp
+      </a>
+      <a class="ig" href="https://www.instagram.com/thebeaueditions?stkn=aGJ5aGhtcHRwNHVz" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red-deep)" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.6" fill="var(--red-deep)" stroke="none"/></svg>
+        Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SIGN OFF ================= -->
+<section class="signoff">
+  <div class="wrap">
+    <img src="assets/logo_full.png" alt="BEAU editions">
+    <p>Gracias por llegar hasta aquí y por apoyar este pequeño proyecto, que empezó como un homenaje a mi
+      perrita estrellita <strong>Beau</strong> <span class="paw">🎀</span> y hoy se convirtió en mi manera favorita de contar historias en video.
+      Con cariño, Hailee.</p>
+  </div>
+</section>
+
+<footer>
+  <img src="assets/bow_transparent.png" alt="BEAU editions" style="opacity:.75;">
+  <p>© BEAU editions — hecho con cariño (y muchos cortes) 🎀</p>
+</footer>
+
+<!-- ================= CHECKOUT OVERLAY (multi-step) ================= -->
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-topbar">
+    <img id="checkoutTopLogo" src="assets/beau_store_logo_small.png" alt="BEAU STORE" style="height:26px;">
+    <button class="checkout-close" id="checkoutClose">&times;</button>
+  </div>
+  <div class="checkout-inner">
+    <div class="checkout-box">
+
+      <div class="checkout-loading" id="checkoutLoading">
+        <img class="spin-logo" src="assets/spin_logo.png" alt="cargando">
+        <p>Preparando tu pedido…</p>
+      </div>
+
+      <div class="checkout-store" id="checkoutStore">
+        <h3>Confirma tu pedido</h3>
+        <div class="pkg-mini-grid" id="pkgMiniGrid"></div>
+        <button class="continue-btn" id="continueToForm">continuar</button>
+      </div>
+
+      <div class="checkout-form" id="checkoutForm">
+        <h3 style="color:var(--red);font-size:22px;text-align:center;margin-bottom:6px;">Tus datos</h3>
+        <p style="text-align:center;color:var(--ink-soft);font-size:13.5px;margin-bottom:18px;">Los necesito para poder escribirte y coordinar tu proyecto 🎀</p>
+        <form id="orderForm">
+          <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;">Nombre completo</label>
+          <input required type="text" id="fName" placeholder="Tu nombre" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);margin-bottom:14px;font-size:15px;font-family:inherit;">
+
+          <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;">Correo electrónico</label>
+          <input required type="email" id="fEmail" placeholder="tucorreo@email.com" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);margin-bottom:14px;font-size:15px;font-family:inherit;">
+
+          <label style="display:block;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;">WhatsApp (con prefijo del país)</label>
+          <input required type="tel" id="fPhone" placeholder="+57 300 1234567" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);margin-bottom:18px;font-size:15px;font-family:inherit;">
+
+          <button type="submit" class="continue-btn" id="submitOrderForm">continuar con el pago</button>
+          <p id="formStatus" style="text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:10px;"></p>
+        </form>
+      </div>
+
+      <div class="checkout-pay" id="checkoutPay">
+        <h3>Finalizar pago</h3>
+
+        <div class="pay-toggle" style="margin-bottom:10px;">
+          <button class="pay-toggle-btn active" id="methodPaypal" data-method="paypal">PayPal</button>
+          <button class="pay-toggle-btn" id="methodBancolombia" data-method="bancolombia">Bancolombia (QR)</button>
+        </div>
+
+        <div class="pay-toggle">
+          <button class="pay-toggle-btn active" id="btn50" data-pct="50">pagar 50% anticipo</button>
+          <button class="pay-toggle-btn" id="btn100" data-pct="100">pagar 100%</button>
+        </div>
+
+        <div class="pay-breakdown">
+          <div class="pay-breakdown-row"><span>Valor del paquete</span><span id="payPkgValue">$0.00 USD</span></div>
+          <div class="pay-breakdown-row"><span>A pagar ahora (<span id="payPctLabel">50</span>%)</span><span id="payBaseAmount">$0.00 USD</span></div>
+          <div class="pay-breakdown-row" id="payFeeRow"><span>Comisión PayPal (5.4% + $0.30)</span><span id="payFee">$0.00 USD</span></div>
+          <div class="pay-breakdown-row total"><span>Total<span id="payTotalLabel"> en USD</span></span><span id="payTotal">$0.00</span></div>
+        </div>
+        <p class="pay-cop-note" id="payCopNote">≈ $0 COP</p>
+
+        <div id="paypalPanel">
+          <div id="paypalButtonContainer"></div>
+          <a class="checkout-note" id="paypalFallbackLink" href="https://www.paypal.me/lyvharion" target="_blank" rel="noopener" style="display:none;color:var(--red);font-weight:700;">o paga directo por PayPal.me</a>
+          <p class="checkout-note">El pago se procesa directo aquí con PayPal.</p>
+        </div>
+
+        <div id="bancolombiaPanel" style="display:none;text-align:center;">
+          <img src="assets/bancolombia_qr.jpg" alt="QR para pagar por Bancolombia" style="max-width:220px;margin:0 auto 14px;border-radius:16px;box-shadow:var(--shadow);">
+          <p style="font-size:13.5px;color:var(--ink-soft);margin-bottom:16px;">Escanea este código desde tu app Bancolombia (o la app de tu banco compatible) por el valor exacto de arriba.</p>
+          <button class="continue-btn" id="markBancolombiaPaid">ya pagué, enviar comprobante</button>
+        </div>
+      </div>
+
+      <div class="checkout-receipt" id="checkoutReceipt" style="display:none;">
+        <div class="big-emoji" style="font-size:44px;text-align:center;margin-bottom:8px;">🎀</div>
+        <h3 style="color:var(--red);font-size:22px;text-align:center;margin-bottom:10px;">¡Ya casi! Envíame tu comprobante</h3>
+        <p style="text-align:center;color:var(--ink-soft);font-size:14px;margin-bottom:20px;">Toma una captura de pantalla del pago en PayPal y adjúntala en el chat de WhatsApp que se va a abrir. Así confirmo tu pedido más rápido 🎀</p>
+        <a id="whatsappReceiptBtn" href="#" target="_blank" rel="noopener" class="continue-btn" style="display:block;text-align:center;text-decoration:none;background:#25D366;">
+          enviar comprobante por WhatsApp
+        </a>
+        <button id="closeReceipt" style="width:100%;background:none;border:none;color:var(--ink-soft);font-size:13px;margin-top:14px;text-decoration:underline;">cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://www.paypal.com/sdk/js?client-id=BAALc3hMX951KARNoSe9EMucI2MjIPB3X71p7bW1OzCLkFQUwUNLlfb6fJVbe57g5XvFS22mahxfBYDG9U&currency=USD&components=buttons" data-namespace="paypal_sdk"></script>
+<script async src="https://www.instagram.com/embed.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(function(){
+  // ---------- Drawer nav ----------
+  var drawer = document.getElementById('drawer');
+  var drawerOverlay = document.getElementById('drawerOverlay');
+  document.getElementById('menuOpen').addEventListener('click', function(){
+    drawer.classList.add('open'); drawerOverlay.classList.add('open');
+  });
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  function closeDrawer(){ drawer.classList.remove('open'); drawerOverlay.classList.remove('open'); }
+  document.querySelectorAll('.nav-link').forEach(function(a){
+    a.addEventListener('click', closeDrawer);
+  });
+
+  // ---------- Videos reales (portafolio + paquetes) ----------
+  // Videos de ejemplo en YouTube (modo "no listado"), con su autor para dar crédito.
+  var VIDEO_POOL = [
+    { id:'WukKnlDmlSM', handle:'@viveloconica', platform:'IG' },
+    { id:'qwvIsbiRzdU', handle:'@Dramarianaatorres', platform:'IG' },
+    { id:'hPHrfBiyIFQ', handle:'@doctorafiorellamotorozzo', platform:'IG' },
+    { id:'AcME0miZBBg', handle:'@luis.pr1me', platform:'TikTok' },
+    { id:'pqxh0aATJM0', handle:'@jacobojoyeria', platform:'IG' },
+    { id:'EfN2--DSlTY', handle:'@jacobojoyeria', platform:'IG' },
+    { id:'ytHRcoomLWc', handle:'@dr.luiscasasola', platform:'IG' },
+    { id:'gPDI4NqR6os', handle:'@drloveurskin', platform:'IG' },
+    { id:'e0VH2AFhhx0', handle:'@viveloconica', platform:'IG' }
+  ];
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+  function ytEmbedSrc(id){
+    return 'https://www.youtube.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&modestbranding=1&rel=0&playsinline=1';
+  }
+  function videoCardMarkup(v){
+    var badge = v.handle ? '<span class="video-handle">'+v.handle+(v.platform ? ' · '+v.platform : '')+'</span>' : '';
+    return '<div class="video-card" style="position:relative;">'
+      + badge
+      + '<iframe src="'+ytEmbedSrc(v.id)+'" allow="autoplay; encrypted-media" loading="lazy"></iframe>'
+      + '</div>';
+  }
+
+  // portafolio: los 4 videos, orden distinto cada visita
+  var portfolioOrder = shuffle(VIDEO_POOL);
+  document.getElementById('portfolioVideoGrid').innerHTML = portfolioOrder.map(videoCardMarkup).join('');
+
+  // paquetes: cada tarjeta elige uno al azar (independiente entre sí)
+  document.querySelectorAll('[data-pkg-video]').forEach(function(el){
+    var v = VIDEO_POOL[Math.floor(Math.random()*VIDEO_POOL.length)];
+    var badge = v.handle ? '<span class="video-handle">'+v.handle+'</span>' : '';
+    el.innerHTML = badge + '<iframe src="'+ytEmbedSrc(v.id)+'" allow="autoplay; encrypted-media" loading="lazy"></iframe>';
+  });
+
+  // ---------- Cart ----------
+  var CART_KEY = 'beau_cart_v2';
+  var GOAL_KEY = 'beau_goal_v1';
+  var cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+  var cartDrawer = document.getElementById('cartDrawer');
+  var cartOverlay = document.getElementById('cartOverlay');
+  document.getElementById('cartOpen').addEventListener('click', function(){
+    cartDrawer.classList.add('open'); cartOverlay.classList.add('open');
+  });
+  document.getElementById('cartClose').addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+  function closeCart(){ cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+
+  function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCart(); }
+
+  function renderCart(){
+    var body = document.getElementById('cartBody');
+    var count = document.getElementById('cartCount');
+    if(cart.length === 0){
+      body.innerHTML = '<p class="empty-cart">Tu carrito está vacío por ahora. Ve a <a href="#paquetes" style="color:var(--red);font-weight:700;">Paquetes</a> y elige el que más te guste 🎀</p>';
+      count.style.display = 'none';
+      return;
+    }
+    count.style.display = 'flex'; count.textContent = cart.length;
+    var html = '';
+    var total = 0;
+    cart.forEach(function(item, i){
+      total += item.price;
+      html += '<div class="line-item"><div><div class="li-name">'+item.name+'</div><div style="font-size:13px;color:var(--ink-soft)">$'+item.price.toFixed(2)+' USD</div></div><button class="li-remove" data-i="'+i+'">quitar</button></div>';
+    });
+    html += '<div class="breakdown"><div class="breakdown-row total"><span>Total</span><span>$'+total.toFixed(2)+' USD</span></div></div>';
+    html += '<button class="checkout-btn" id="goCheckout">ir a pagar</button>';
+    html += '<p class="cart-legal">El pago se realiza por PayPal. La comisión de la plataforma corre por cuenta del comprador. Ver term &amp; conditions.</p>';
+    body.innerHTML = html;
+    document.querySelectorAll('.li-remove').forEach(function(btn){
+      btn.addEventListener('click', function(){ cart.splice(parseInt(this.dataset.i),1); saveCart(); });
+    });
+    document.getElementById('goCheckout').addEventListener('click', function(){
+      closeCart(); openCheckout();
+    });
+  }
+
+  document.querySelectorAll('.pkg-add').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      cart.push({name:this.dataset.name, price:parseFloat(this.dataset.price)});
+      saveCart();
+      cartDrawer.classList.add('open'); cartOverlay.classList.add('open');
+    });
+  });
+
+  renderCart();
+
+  // ---------- TRM (silencioso, sin recuadro feo) ----------
+  var TRM_KEY = 'beau_trm_v1';
+  var currentRate = 4150;
+  function applyRate(rate){
+    currentRate = rate;
+    document.querySelectorAll('.pkg-cop').forEach(function(el){
+      var usd = parseFloat(el.dataset.usd);
+      el.querySelector('.cop-value').textContent = Math.round(usd*rate).toLocaleString('es-CO');
+    });
+  }
+  var today = new Date().toISOString().slice(0,10);
+  var cached = JSON.parse(localStorage.getItem(TRM_KEY) || 'null');
+  if(cached && cached.date === today){
+    applyRate(cached.rate);
+  } else {
+    applyRate(currentRate);
+    fetch('https://open.er-api.com/v6/latest/USD')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(data && data.rates && data.rates.COP){
+          localStorage.setItem(TRM_KEY, JSON.stringify({rate: data.rates.COP, date: today}));
+          applyRate(data.rates.COP);
+        }
+      })
+      .catch(function(){});
+  }
+
+  // ---------- EmailJS ----------
+  // IMPORTANTE PARA HAILEE: pega aquí tu Public Key de EmailJS
+  // (la encuentras en EmailJS → Account → General → Public Key)
+  var EMAILJS_PUBLIC_KEY = 'Q4Rrj3IbYh4R7GX5s';
+  var EMAILJS_SERVICE_ID = 'service_c93p19q';
+  var EMAILJS_TEMPLATE_ORDER = 'template_r5l63he';   // confirmación de pedido/compra
+  var EMAILJS_TEMPLATE_WELCOME = 'template_p0vmubs'; // bienvenida al cliente
+  var ADMIN_EMAIL = 'haileestarborm@gmail.com';
+  try{ emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); }catch(e){}
+
+  var WHATSAPP_NUMBER = '573212108643';
+
+  // Truco de doble envío: como solo hay 2 plantillas, reutilizamos la de
+  // confirmación de compra dos veces cuando el pago queda confirmado
+  // (real en PayPal, o manual en Bancolombia): una copia va al cliente y
+  // otra se fuerza a tu correo, para que también te llegue la alerta.
+  // IMPORTANTE: en EmailJS, el campo "To Email" de esta plantilla debe
+  // estar puesto como {{to_email}} para que este truco funcione.
+  function sendPaymentConfirmedEmails(){
+    var pkgNames = cart.map(function(i){ return i.name; }).join(', ');
+    var baseParams = { name: customerData.name, email: customerData.email, telefono: customerData.phone, paquete: pkgNames };
+
+    var toClient = Object.assign({}, baseParams, { to_email: customerData.email });
+    var toAdmin = Object.assign({}, baseParams, { to_email: ADMIN_EMAIL });
+
+    try{ emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ORDER, toClient); }catch(e){}
+    try{ emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ORDER, toAdmin); }catch(e){}
+  }
+
+  // ---------- Checkout multi-step ("nueva página" BEAU STORE) ----------
+  var overlay = document.getElementById('checkoutOverlay');
+  var loadingEl = document.getElementById('checkoutLoading');
+  var storeEl = document.getElementById('checkoutStore');
+  var formEl = document.getElementById('checkoutForm');
+  var payEl = document.getElementById('checkoutPay');
+  var receiptEl = document.getElementById('checkoutReceipt');
+  var cartSubtotal = 0;
+  var currentPct = 50;
+  var customerData = { name:'', email:'', phone:'' };
+
+  var PKG_INFO = [
+    {name:'The Beau single tee', price:10.74},
+    {name:'The Beau Double-Take', price:73.29},
+    {name:'The BEAU Tee', price:87.10},
+    {name:'The "BEAU" Director\'s Cut', price:113.71},
+    {name:'The "this is BS lux"', price:129.03},
+    {name:'The Beau "Ultimate Khalessi"', price:165.00}
+  ];
+
+  function hideAllSteps(){
+    loadingEl.style.display = 'none';
+    storeEl.style.display = 'none';
+    formEl.style.display = 'none';
+    payEl.style.display = 'none';
+    receiptEl.style.display = 'none';
+  }
+
+  function openCheckout(){
+    cartSubtotal = cart.reduce(function(s,i){ return s + i.price; }, 0);
+    overlay.classList.add('open');
+    hideAllSteps();
+    loadingEl.style.display = 'block';
+
+    // resalta en el header de esta "nueva página" los paquetes elegidos
+    var miniGrid = document.getElementById('pkgMiniGrid');
+    var cartNames = cart.map(function(i){ return i.name; });
+    miniGrid.innerHTML = PKG_INFO.map(function(p){
+      var sel = cartNames.indexOf(p.name) > -1;
+      return '<div class="pkg-mini'+(sel?' selected':'')+'"><div style="font-family:\'Baloo 2\',sans-serif;font-weight:700;font-size:13px;margin-bottom:6px;">'+p.name+'</div><div class="pkg-mini-price">$'+p.price.toFixed(2)+'</div></div>';
+    }).join('');
+
+    setTimeout(function(){
+      loadingEl.style.display = 'none';
+      storeEl.style.display = 'block';
+    }, 1400);
+  }
+
+  document.getElementById('continueToForm').addEventListener('click', function(){
+    storeEl.style.display = 'none';
+    formEl.style.display = 'block';
+  });
+
+  document.getElementById('checkoutClose').addEventListener('click', function(){ overlay.classList.remove('open'); });
+
+  // ---------- Paso: formulario de datos + envío por EmailJS ----------
+  document.getElementById('orderForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('fName').value.trim();
+    var email = document.getElementById('fEmail').value.trim();
+    var phone = document.getElementById('fPhone').value.trim();
+    customerData = { name:name, email:email, phone:phone };
+
+    var pkgNames = cart.map(function(i){ return i.name; }).join(', ');
+    var statusEl = document.getElementById('formStatus');
+    var submitBtn = document.getElementById('submitOrderForm');
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Enviando...';
+
+    var templateParams = { name: name, email: email, telefono: phone, paquete: pkgNames };
+
+    var sendOrder = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ORDER, templateParams);
+    var sendWelcome = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_WELCOME, templateParams);
+
+    Promise.allSettled([sendOrder, sendWelcome]).then(function(){
+      // seguimos al pago aunque el correo falle, para no trabar al cliente
+      statusEl.textContent = '';
+      submitBtn.disabled = false;
+      formEl.style.display = 'none';
+      payEl.style.display = 'block';
+      currentPct = 50;
+      paymentMethod = 'paypal';
+      document.getElementById('methodPaypal').classList.add('active');
+      document.getElementById('methodBancolombia').classList.remove('active');
+      document.getElementById('paypalPanel').style.display = 'block';
+      document.getElementById('bancolombiaPanel').style.display = 'none';
+      document.getElementById('btn50').classList.add('active');
+      document.getElementById('btn100').classList.remove('active');
+      updatePayBreakdown();
+    });
+  });
+
+  document.getElementById('btn50').addEventListener('click', function(){ setPct(50); });
+  document.getElementById('btn100').addEventListener('click', function(){ setPct(100); });
+  function setPct(pct){
+    currentPct = pct;
+    document.getElementById('btn50').classList.toggle('active', pct===50);
+    document.getElementById('btn100').classList.toggle('active', pct===100);
+    updatePayBreakdown();
+  }
+
+  var lastTotal = 0;
+  var paymentMethod = 'paypal';
+
+  document.getElementById('methodPaypal').addEventListener('click', function(){ setMethod('paypal'); });
+  document.getElementById('methodBancolombia').addEventListener('click', function(){ setMethod('bancolombia'); });
+  function setMethod(method){
+    paymentMethod = method;
+    document.getElementById('methodPaypal').classList.toggle('active', method==='paypal');
+    document.getElementById('methodBancolombia').classList.toggle('active', method==='bancolombia');
+    document.getElementById('paypalPanel').style.display = method==='paypal' ? 'block' : 'none';
+    document.getElementById('bancolombiaPanel').style.display = method==='bancolombia' ? 'block' : 'none';
+    updatePayBreakdown();
+  }
+
+  function updatePayBreakdown(){
+    var base = cartSubtotal * (currentPct/100);
+    var fee = 0;
+    var feeRow = document.getElementById('payFeeRow');
+    var totalLabel = document.getElementById('payTotalLabel');
+    if (paymentMethod === 'paypal'){
+      // PayPal Colombia: 5.4% + $0.30 USD (tarifa vigente para comercios hasta 3,000 USD/mes)
+      fee = base * 0.054 + 0.30;
+      feeRow.style.display = 'flex';
+      totalLabel.textContent = ' en USD';
+    } else {
+      fee = 0;
+      feeRow.style.display = 'none';
+      totalLabel.textContent = ' (transferencia sin comisión de PayPal)';
+    }
+    var total = base + fee;
+    lastTotal = total;
+    document.getElementById('payPkgValue').textContent = '$'+cartSubtotal.toFixed(2)+' USD';
+    document.getElementById('payPctLabel').textContent = currentPct;
+    document.getElementById('payBaseAmount').textContent = '$'+base.toFixed(2)+' USD';
+    document.getElementById('payFee').textContent = '$'+fee.toFixed(2)+' USD';
+    document.getElementById('payTotal').textContent = '$'+total.toFixed(2);
+    var cop = Math.round(total*currentRate).toLocaleString('es-CO');
+    document.getElementById('payCopNote').textContent = '≈ $'+cop+' COP';
+    if (paymentMethod === 'paypal') renderPaypalButton(total);
+  }
+
+  // ---------- Botón real de PayPal (SDK) ----------
+  function renderPaypalButton(total){
+    var container = document.getElementById('paypalButtonContainer');
+    var fallback = document.getElementById('paypalFallbackLink');
+    container.innerHTML = '';
+    if (typeof window.paypal === 'undefined' || !window.paypal.Buttons){
+      fallback.style.display = 'block';
+      fallback.href = 'https://www.paypal.me/lyvharion/' + total.toFixed(2) + 'USD';
+      return; // SDK no cargó (sin internet o bloqueado): queda el link de respaldo
+    }
+    fallback.style.display = 'none';
+    window.paypal.Buttons({
+      style: { color: 'gold', shape: 'pill', label: 'paypal', height: 45 },
+      createOrder: function(data, actions){
+        return actions.order.create({
+          purchase_units: [{ amount: { value: total.toFixed(2) }, description: 'BEAU editions' }]
+        });
+      },
+      onApprove: function(data, actions){
+        return actions.order.capture().then(function(){
+          sendPaymentConfirmedEmails();
+          goToReceiptStep('PayPal');
+        });
+      }
+    }).render('#paypalButtonContainer');
+  }
+
+  // ---------- Paso: ir a la pantalla de "enviar comprobante" ----------
+  function goToReceiptStep(methodLabel){
+    var amount = lastTotal.toFixed(2);
+
+    var goal = parseFloat(localStorage.getItem(GOAL_KEY) || '0');
+    goal = Math.min(100, goal + 6);
+    localStorage.setItem(GOAL_KEY, String(goal));
+    updateGoalUI(goal);
+
+    // arma el mensaje de WhatsApp para el comprobante
+    var pkgNames = cart.map(function(i){ return i.name; }).join(', ');
+    var msg = 'Hola! Soy ' + customerData.name + '. Acabo de pagar mi pedido de "' + pkgNames + '" ($' + amount + ' USD via ' + methodLabel + '). Te adjunto la captura de mi comprobante de pago 🎀';
+    document.getElementById('whatsappReceiptBtn').href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+
+    payEl.style.display = 'none';
+    receiptEl.style.display = 'block';
+    cart = []; saveCart();
+  }
+
+  // ---------- Paso: confirma pago por Bancolombia (QR) ----------
+  document.getElementById('markBancolombiaPaid').addEventListener('click', function(){
+    sendPaymentConfirmedEmails();
+    goToReceiptStep('Bancolombia (QR)');
+  });
+
+  document.getElementById('closeReceipt').addEventListener('click', function(){ overlay.classList.remove('open'); });
+
+  function updateGoalUI(pct){
+    document.getElementById('goalFill').style.width = pct + '%';
+    document.getElementById('goalPct').textContent = Math.round(pct) + '%';
+  }
+  updateGoalUI(parseFloat(localStorage.getItem(GOAL_KEY) || '0'));
+})();
+</script>
+
+</body>
+</html>
